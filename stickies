@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Stickies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .sticker {
+            width: 200px;
+            height: 150px;
+            background-color: #fff475;
+            padding: 10px;
+            margin: 10px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            position: absolute;
+            resize: both;
+            overflow: auto;
+        }
+        .sticker textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 16px;
+        }
+        #add-sticker-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Web Stickies</h1>
+    <button id="add-sticker-btn">Add Sticker</button>
+    <div id="sticker-container"></div>
+
+    <script>
+        document.getElementById("add-sticker-btn").addEventListener("click", () => {
+            const sticker = document.createElement("div");
+            sticker.className = "sticker";
+            sticker.style.left = Math.random() * 70 + "%";
+            sticker.style.top = Math.random() * 70 + "%";
+            
+            const textArea = document.createElement("textarea");
+            textArea.placeholder = "Type here...";
+            sticker.appendChild(textArea);
+            
+            sticker.addEventListener("mousedown", (e) => {
+                let shiftX = e.clientX - sticker.getBoundingClientRect().left;
+                let shiftY = e.clientY - sticker.getBoundingClientRect().top;
+                
+                const moveAt = (pageX, pageY) => {
+                    sticker.style.left = pageX - shiftX + 'px';
+                    sticker.style.top = pageY - shiftY + 'px';
+                }
+                const onMouseMove = (e) => moveAt(e.pageX, e.pageY);
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", () => {
+                    document.removeEventListener("mousemove", onMouseMove);
+                }, { once: true });
+            });
+            
+            document.getElementById("sticker-container").appendChild(sticker);
+        });
+    </script>
+</body>
+</html>
